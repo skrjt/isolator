@@ -5,19 +5,27 @@ import 'package:isolator/src/configurators/isolates_configuration.dart';
 import 'package:isolator/src/messengers/isolate_messenger.dart';
 import 'package:isolator/src/messengers/isolate_messenger_pool.dart';
 
+/// Hides work with isolates.
 abstract class Isolator<T, V> {
+  /// Configuration for working with isolates.
   final IsolatesConfiguration isolatesConfiguration;
-
+  /// Hides communication with isolates.
   late final IsolateMessengerPool<T, V> _isolateMessengers;
 
   Isolator({required this.isolatesConfiguration});
 
+  /// Clears the memory.
   Future<void> close() async {
-    _isolateMessengers.close();
+    _isolateMessengers.dispose();
   }
 
+  /// Instantiates the isolate.
   Future<Isolate> spawnIsolate({required SendPort sendPort});
 
+  /// Sends the operation to the isolate.
+  ///
+  /// [isolateId] - pass so that the operation is performed by a specific isolate.
+  /// [onCancel] - the callback that will be executed after the operation is canceled.
   CancelableOperation<V> send(T operation, {int? isolateId, FutureOr Function()? onCancel}) {
     return CancelableOperation.fromFuture(
       _isolateMessengers.send(operation, isolateId: isolateId),
@@ -25,6 +33,7 @@ abstract class Isolator<T, V> {
     );
   }
 
+  /// Launches isolates.
   Future<void> startIsolates() async {
     _isolateMessengers = IsolateMessengerPool(
       buildIsolateMessenger: () => _spawnIsolateMessenger(),

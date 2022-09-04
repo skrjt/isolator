@@ -1,7 +1,11 @@
 part of '../../isolator.dart';
 
+/// Type of short operation handler.
 typedef ShortOperationHandler<K, T> = FutureOr<dynamic> Function(K instance, T command);
 
+/// A controller that allows to work with an instance of a class in isolate,
+///
+/// which provides a simpler API with a dynamic return type.
 class ShortInstanceIsolateController<K, T> extends InstanceIsolator<K, T, dynamic> {
   ShortInstanceIsolateController._({
     required K Function() instanceBuilder,
@@ -11,11 +15,14 @@ class ShortInstanceIsolateController<K, T> extends InstanceIsolator<K, T, dynami
           operations: operations,
         );
 
-  CancelableOperation typedSend<V>(T operation) => send(operation) as CancelableOperation<V>;
+  /// Typed sending of operations to isolate.
+  CancelableOperation<V> typedSend<V>(T operation) => send(operation) as CancelableOperation<V>;
 }
 
+/// Factory of [ShortInstanceIsolateController].
 abstract class ShortInstanceIsolateControllerFactory<K, T> {
-  static Future<ShortInstanceIsolateController> build<K, T>({
+  /// Creates instance of [ShortInstanceIsolateController].
+  static Future<ShortInstanceIsolateController> create<K, T>({
     required K Function() instanceBuilder,
     required Map<T, ShortOperationHandler<K, T>> operations,
   }) async {

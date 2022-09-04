@@ -1,5 +1,6 @@
 import 'dart:isolate';
 
+/// Provides access to communication with the isolate.
 class IsolateMessenger {
   final Isolate isolate;
   final SendPort sendPort;
@@ -16,7 +17,8 @@ class IsolateMessenger {
     _isolateFinalizer.attach(this, isolate, detach: this);
   }
 
-  void close() {
+  /// Disposes of instance.
+  void dispose() {
     _isolateFinalizer.detach(this);
   }
 }

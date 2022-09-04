@@ -3,11 +3,13 @@ import 'dart:isolate';
 
 import 'package:isolator/src/configurators/isolates_configuration.dart';
 import 'package:isolator/src/isolator.dart';
-import 'package:isolator/src/messages/isolator_response_object.dart';
+import 'package:isolator/src/messages/response/isolator_response_object.dart';
 import 'package:isolator/src/messages/isolator_send_object.dart';
 
+/// Type of operation handler.
 typedef OperationHandler<T, V> = FutureOr<V> Function(T command);
 
+/// An isolator that allows to work with static class inside an isolate.
 abstract class StaticIsolator<T, V> extends Isolator<T, V> {
   final Map<T, OperationHandler<T, V>> operations;
 
