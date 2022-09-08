@@ -2,15 +2,19 @@ import 'dart:async';
 import 'dart:isolate';
 import 'package:isolator/src/configurators/isolates_configuration.dart';
 import 'package:isolator/src/isolator.dart';
-import 'package:isolator/src/messages/isolator_error_response.dart';
-import 'package:isolator/src/messages/isolator_response_object.dart';
+import 'package:isolator/src/messages/response/isolator_error_response.dart';
+import 'package:isolator/src/messages/response/isolator_response_object.dart';
 import 'package:isolator/src/messages/isolator_send_object.dart';
 
+/// Type of operation handler.
 typedef InstanceOperationHandler<K, T, V> = FutureOr<V> Function(K instance, T command);
 
+/// An isolator that allows to work with an instance of a class inside an isolate.
 abstract class InstanceIsolator<K, T, V> extends Isolator<T, V> {
+  /// A callback that instantiates an instance of a class inside an isolate.
   late final K Function() _instanceBuilder;
 
+  /// The ratio of commands and operations performed in isolate.
   final Map<T, InstanceOperationHandler<K, T, V>> operations;
 
   InstanceIsolator({

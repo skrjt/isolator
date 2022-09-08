@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _incrementCounter() async {
-    instanceIsolateController ??= await InstanceIsolateControllerFactory.build<Counter, int, dynamic>(
+    instanceIsolateController ??= await InstanceIsolateControllerFactory.create<Counter, int, dynamic>(
       instanceBuilder: () => Counter(),
       operations: {
         0: (instance, command) => instance.inc(),
@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _errorThrow() async {
-    instanceIsolateController ??= await InstanceIsolateControllerFactory.build<Counter, int, dynamic>(
+    instanceIsolateController ??= await InstanceIsolateControllerFactory.create<Counter, int, dynamic>(
       instanceBuilder: () => Counter(),
       operations: {
         0: (instance, command) => instance.inc(),
